@@ -5,13 +5,19 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+const startTime = new Date();
 
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
+  res.send("The server's up");
+});
+
+app.get('/health', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    timeStamp: new Date().toISOString(),
+    startTime: startTime.toISOString(),
+    currentTime: new Date().toISOString(),
     uptimeSec: process.uptime()
   });
 });
