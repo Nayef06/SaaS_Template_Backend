@@ -7,19 +7,15 @@
 [✓] Create Express app  
 [✓] Add health check endpoint  
 [✓] Add environment variable support  
-[✓] Commit project bootstrap  
 
-## PART 2 – Postgres & Data Layer
-[ ] Set up Postgres locally  
-[ ] Choose DB access layer  
-[ ] Configure DB connection  
-[ ] Create migrations system  
-[ ] Create users table  
-[ ] Create roles table  
-[ ] Create user_roles table  
-[ ] Create refresh_tokens table  
-[ ] Run migrations  
-[ ] Commit database setup  
+## PART 2 – Postgres & Data Layer w/ RLS
+[✓] Set up Postgres locally  
+[✓] Choose DB access layer  
+[✓] Configure DB connection  
+[✓] Create users table  
+[✓] Create roles table  
+[✓] Create user_roles table  
+[✓] Create refresh_tokens table  
 
 ## PART 3 – Auth Core (JWT + bcrypt)
 [ ] User registration endpoint  
@@ -30,7 +26,6 @@
 [ ] Store refresh tokens in DB  
 [ ] Token refresh endpoint  
 [ ] Logout endpoint  
-[ ] Commit authentication core  
 
 ## PART 4 – Auth Middleware & Security
 [ ] JWT verification middleware  
@@ -38,7 +33,6 @@
 [ ] Token expiration handling  
 [ ] Password validation rules  
 [ ] Basic rate limiting  
-[ ] Commit auth middleware  
 
 ## PART 5 – RBAC
 [ ] Define roles enum  
@@ -47,7 +41,6 @@
 [ ] RBAC middleware  
 [ ] Protect routes by role  
 [ ] Admin-only route  
-[ ] Commit RBAC  
 
 ## PART 6 – Redis Integration
 [ ] Set up Redis  
@@ -55,7 +48,6 @@
 [ ] Cache example read  
 [ ] Cache invalidation  
 [ ] Use Redis for refresh tokens or sessions  
-[ ] Commit Redis integration  
 
 ## PART 7 – Stripe Setup
 [ ] Create Stripe account  
@@ -64,7 +56,6 @@
 [ ] Create prices  
 [ ] Create checkout session endpoint  
 [ ] Store subscription metadata  
-[ ] Commit Stripe base  
 
 ## PART 8 – Stripe Webhooks
 [ ] Webhook endpoint  
@@ -73,14 +64,12 @@
 [ ] Handle subscription updated  
 [ ] Handle subscription canceled  
 [ ] Sync subscription to DB  
-[ ] Commit Stripe webhooks  
 
 ## PART 9 – SaaS Access Control
 [ ] Create subscriptions table  
 [ ] Link users to subscriptions  
 [ ] Feature gating middleware  
 [ ] Block access for inactive subscriptions  
-[ ] Commit SaaS gating  
 
 ## PART 10 – Logging & Error Handling
 [ ] Winston logger setup  
@@ -88,7 +77,6 @@
 [ ] Error logging  
 [ ] Global error handler  
 [ ] Standard error response format  
-[ ] Commit logging & errors  
 
 ## PART 11 – API Hardening
 [ ] Input validation layer  
@@ -96,14 +84,12 @@
 [ ] Centralized response helpers  
 [ ] CORS configuration  
 [ ] Security headers  
-[ ] Commit API hardening  
 
 ## PART 12 – Developer Experience
 [ ] Seed data scripts  
 [ ] Test users & roles  
 [ ] Stripe test mode flow  
 [ ] API client collection  
-[ ] Commit developer experience improvements  
 
 ## PART 13 – Testing
 [ ] Test setup  
@@ -111,7 +97,6 @@
 [ ] RBAC tests  
 [ ] Stripe webhook tests  
 [ ] Redis-related tests  
-[ ] Commit tests  
 
 ## PART 14 – Production Readiness
 [ ] Environment validation  
@@ -120,4 +105,3 @@
 [ ] Docker Compose (Postgres, Redis)  
 [ ] README documentation  
 [ ] Final cleanup  
-[ ] Commit production readiness  
