@@ -18,14 +18,14 @@
 [✓] Create refresh_tokens table  
 
 ## PART 3 – Auth Core (JWT + bcrypt)
-[ ] User registration endpoint  
-[ ] Password hashing  
-[ ] User login endpoint  
-[ ] JWT access token generation  
-[ ] JWT refresh token generation  
-[ ] Store refresh tokens in DB  
-[ ] Token refresh endpoint  
-[ ] Logout endpoint  
+[✓] User registration endpoint  
+[✓] Password hashing  
+[✓] User login endpoint  
+[✓] JWT access token generation  
+[✓] JWT refresh token generation  
+[✓] Store refresh tokens in DB  
+[✓] Token refresh endpoint  
+[✓] Logout endpoint  
 
 ## PART 4 – Auth Middleware & Security
 [ ] JWT verification middleware  

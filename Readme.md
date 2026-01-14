@@ -14,7 +14,7 @@ Express + TypeScript + Prisma + Postgres.
    - Update `DATABASE_URL` with your local Postgres connection string.
    - Sync schema:
      ```bash
-     npx prisma db push
+     npx prisma migrate dev
      ```
 
 ## Development
@@ -33,4 +33,8 @@ npm run start
 ## API
 
 - `GET /` - Health check
+- `POST /auth/register` - Register
+- `POST /auth/login` - Login
+- `POST /auth/refresh` - Refresh Token
+- `POST /auth/logout` - Logout
 

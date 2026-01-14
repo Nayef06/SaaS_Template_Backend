@@ -1,7 +1,8 @@
 node_modules/
 dist/
+notes/
 .env
 .env.local
 *.log
 .DS_Store
-notes.md
+prisma/migrations

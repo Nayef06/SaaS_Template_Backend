@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
+import authRoutes from './routes/auth.routes';
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
   res.send("The server's up");
 });
+
+app.use('/auth', authRoutes);
 
 app.get('/health', (req: Request, res: Response) => {
   res.json({
