@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
+import protectedRoutes from './routes/protected.routes';
 import authRoutes from './routes/auth.routes';
+import { rateLimitMiddleware } from './middleware/rateLimit.middleware';
 
 dotenv.config();
 
@@ -10,11 +12,15 @@ const startTime = new Date();
 
 app.use(express.json());
 
+// Apply rate limiting globally (or you could apply it only to specific routes)
+app.use(rateLimitMiddleware);
+
 app.get('/', (req: Request, res: Response) => {
   res.send("The server's up");
 });
 
 app.use('/auth', authRoutes);
+app.use('/protected', protectedRoutes);
 
 app.get('/health', (req: Request, res: Response) => {
   res.json({

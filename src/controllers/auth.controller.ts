@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../utils/db';
 
+import { validatePassword } from '../utils/validation';
+
 // Helper to generate tokens
 // In a real app, you might want to type the payload more strictly
 const generateTokens = (userId: string, role: string) => {
@@ -23,6 +25,11 @@ export const register = async (req: Request, res: Response) => {
 
         if (!email || !password) {
             return res.status(400).json({ error: 'Email and password are required' });
+        }
+
+        const passwordValidation = validatePassword(password);
+        if (!passwordValidation.isValid) {
+            return res.status(400).json({ error: passwordValidation.error });
         }
 
         const existingUser = await prisma.user.findUnique({ where: { email } });
