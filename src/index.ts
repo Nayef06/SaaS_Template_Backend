@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
 import protectedRoutes from './routes/protected.routes';
 import authRoutes from './routes/auth.routes';
+import adminRoutes from './routes/admin.routes';
 import { rateLimitMiddleware } from './middleware/rateLimit.middleware';
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 app.use('/protected', protectedRoutes);
 
 app.get('/health', (req: Request, res: Response) => {

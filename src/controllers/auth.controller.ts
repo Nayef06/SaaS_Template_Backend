@@ -39,21 +39,36 @@ export const register = async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Fetch default role
+        const userRole = await prisma.role.findUnique({
+            where: { name: 'USER' }
+        });
+
         const newUser = await prisma.user.create({
             data: {
                 email,
                 password: hashedPassword,
+                roles: userRole ? {
+                    create: {
+                        roleId: userRole.id
+                    }
+                } : undefined
             },
+            include: {
+                roles: {
+                    include: {
+                        role: true
+                    }
+                }
+            }
         });
-
-        // Optionally assign a default role here if you had logic for it.
-        // For now, we just create the user.
 
         res.status(201).json({
             message: 'User registered successfully',
             user: {
                 id: newUser.id,
                 email: newUser.email,
+                role: newUser.roles[0]?.role?.name,
                 createdAt: newUser.createdAt,
             },
         });

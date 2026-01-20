@@ -16,6 +16,10 @@ Express + TypeScript + Prisma + Postgres.
      ```bash
      npx prisma migrate dev
      ```
+   - Seed database (Roles):
+     ```bash
+     npx prisma db seed
+     ```
 
 ## Development
 
@@ -32,9 +36,12 @@ npm run start
 
 ## API
 
-- `GET /` - Health check
+- `GET /` - Health check (Simple)
+- `GET /health` - Detailed Health Check
 - `POST /auth/register` - Register
 - `POST /auth/login` - Login
 - `POST /auth/refresh` - Refresh Token
 - `POST /auth/logout` - Logout
+- `GET /protected/dashboard` - Protected Example (Authenticated)
+- `GET /admin/stats` - Admin Stats (Protected, Admin only)
 

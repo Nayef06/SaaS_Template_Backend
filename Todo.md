@@ -35,12 +35,12 @@
 [ ] Basic rate limiting  
 
 ## PART 5 – RBAC
-[ ] Define roles enum  
-[ ] Define permissions mapping  
-[ ] Role assignment logic  
-[ ] RBAC middleware  
-[ ] Protect routes by role  
-[ ] Admin-only route  
+[✓] Define roles enum  
+[✓] Define permissions mapping  
+[✓] Role assignment logic  
+[✓] RBAC middleware  
+[✓] Protect routes by role  
+[✓] Admin-only route  
 
 ## PART 6 – Redis Integration
 [ ] Set up Redis  
