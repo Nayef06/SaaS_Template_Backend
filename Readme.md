@@ -36,7 +36,7 @@ npm run start
 
 ## API
 
-- `GET /` - Health check (Simple)
+- `GET /` - Health check
 - `GET /health` - Detailed Health Check
 - `POST /auth/register` - Register
 - `POST /auth/login` - Login
