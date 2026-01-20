@@ -28,11 +28,11 @@
 [✓] Logout endpoint  
 
 ## PART 4 – Auth Middleware & Security
-[ ] JWT verification middleware  
-[ ] Protected route example  
-[ ] Token expiration handling  
-[ ] Password validation rules  
-[ ] Basic rate limiting  
+[✓] JWT verification middleware  
+[✓] Protected route example  
+[✓] Token expiration handling  
+[✓] Password validation rules  
+[✓] Basic rate limiting  
 
 ## PART 5 – RBAC
 [✓] Define roles enum  
@@ -43,11 +43,11 @@
 [✓] Admin-only route  
 
 ## PART 6 – Redis Integration
-[ ] Set up Redis  
-[ ] Connect Redis client  
-[ ] Cache example read  
-[ ] Cache invalidation  
-[ ] Use Redis for refresh tokens or sessions  
+[✓] Set up Redis  
+[✓] Connect Redis client  
+[✓] Cache example read  
+[✓] Cache invalidation  
+[✓] Use Redis for refresh tokens or sessions  
 
 ## PART 7 – Stripe Setup
 [ ] Create Stripe account  

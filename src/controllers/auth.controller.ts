@@ -78,6 +78,8 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
+import { setCache, getCache, deleteCache } from '../utils/cache';
+
 export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
@@ -111,9 +113,7 @@ export const login = async (req: Request, res: Response) => {
 
         const { accessToken, refreshToken } = generateTokens(user.id, roleName);
 
-        // Store refresh token in DB
-        // Calculate expiry date for DB (7 days from now usually, but let's just use Date object)
-        // Parsing "7d" to date is annoying, so we'll just set it to 7 days from now manually for the DB record
+        // Store refresh token in DB (keeping for persistence)
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 7);
 
@@ -124,6 +124,10 @@ export const login = async (req: Request, res: Response) => {
                 expiresAt: expiresAt,
             },
         });
+
+        // Store in Redis (primary for validation)
+        // Key: refresh_token:<token>, Value: userId, TTL: 7 days (seconds)
+        await setCache(`refresh_token:${refreshToken}`, { userId: user.id }, 7 * 24 * 60 * 60);
 
         res.json({
             message: 'Login successful',
@@ -158,52 +162,71 @@ export const refreshToken = async (req: Request, res: Response) => {
             return res.status(401).json({ error: 'Invalid refresh token' });
         }
 
-        // Check if it exists in DB and is valid
-        const storedToken = await prisma.refreshToken.findUnique({
-            where: { token: refreshToken },
-            include: { user: true }
-        });
+        // Check Redis first
+        const cacheData = await getCache<{ userId: string }>(`refresh_token:${refreshToken}`);
 
-        if (!storedToken) {
-            return res.status(401).json({ error: 'Refresh token not found' });
+        if (cacheData) {
+            // Valid in Redis, proceed
+            // (We assume if it's in Redis, it's not revoked, as we delete on revoke)
+        } else {
+            // Not in Redis, check DB (fallback or older session)
+            const storedToken = await prisma.refreshToken.findUnique({
+                where: { token: refreshToken },
+                include: { user: true }
+            });
+
+            // If not in DB either, or revoked/expired
+            if (!storedToken || storedToken.revoked || new Date() > storedToken.expiresAt) {
+                return res.status(401).json({ error: 'Refresh token not found or expired' });
+            }
+
+            // If valid in DB but missing in Redis (e.g. server restart), we can continue.
+            // Ideally we write back to Redis here but optional.
         }
 
-        if (storedToken.revoked) {
-            // Token reuse detection could happen here - revoke all user tokens?
-            return res.status(401).json({ error: 'Refresh token has been revoked' });
-        }
+        // We need userId. If we got it from cache, use it. If from DB, use storedToken.userId.
+        // But wait, we need to generate NEW tokens.
+        // We also need to revoke the OLD token.
 
-        if (new Date() > storedToken.expiresAt) {
-            return res.status(401).json({ error: 'Refresh token expired' });
-        }
+        // Revoke Strategy:
+        // 1. Delete old token from Redis
+        // 2. Mark old token revoked in DB
 
-        // Revoke the used refresh token (Rotation)
-        await prisma.refreshToken.update({
-            where: { id: storedToken.id },
-            data: { revoked: true }
-        });
+        await deleteCache(`refresh_token:${refreshToken}`);
+
+        // Find in DB to revoke (even if we validated via Redis, we sync state)
+        const storedToken = await prisma.refreshToken.findUnique({ where: { token: refreshToken } });
+        if (storedToken) {
+            await prisma.refreshToken.update({
+                where: { id: storedToken.id },
+                data: { revoked: true }
+            });
+        }
 
         // Generate new pair
-        // Re-fetch roles to be safe
+        const userId = decoded.userId || storedToken?.userId;
+
         const userWithRoles = await prisma.user.findUnique({
-            where: { id: storedToken.userId },
+            where: { id: userId },
             include: { roles: { include: { role: true } } }
         });
         const roleName = userWithRoles?.roles[0]?.role?.name || 'USER';
 
-        const tokens = generateTokens(storedToken.userId, roleName);
+        const tokens = generateTokens(userId, roleName);
 
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 7);
 
-        // Save new refresh token
+        // Save new
         await prisma.refreshToken.create({
             data: {
                 token: tokens.refreshToken,
-                userId: storedToken.userId,
+                userId: userId,
                 expiresAt: expiresAt
             }
         });
+
+        await setCache(`refresh_token:${tokens.refreshToken}`, { userId: userId }, 7 * 24 * 60 * 60);
 
         res.json({
             accessToken: tokens.accessToken,
@@ -221,12 +244,10 @@ export const logout = async (req: Request, res: Response) => {
         const { refreshToken } = req.body;
 
         if (refreshToken) {
-            // We can either delete it or mark it revoked. Let's delete it or mark revoked.
-            // The schema has `revoked` boolean. Let's mark it.
-            // Actually, if we want to "logout", we should probably ensure it can't be used again.
-            // If we just revoke, it's good.
-            // We could also delete it to save space.
-            // Let's revoke.
+            // Delete from Redis
+            await deleteCache(`refresh_token:${refreshToken}`);
+
+            // Mark revoked in DB
             const storedToken = await prisma.refreshToken.findUnique({
                 where: { token: refreshToken }
             });

@@ -21,6 +21,10 @@ Express + TypeScript + Prisma + Postgres.
      npx prisma db seed
      ```
 
+3. **Redis:**
+   - Ensure Redis is running locally on port `6379`.
+   - Update `REDIS_URL` in `.env` if your Redis configuration differs.
+
 ## Development
 
 ```bash

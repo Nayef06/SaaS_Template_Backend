@@ -14,7 +14,12 @@ const startTime = new Date();
 app.use(express.json());
 
 // Apply rate limiting globally (or you could apply it only to specific routes)
+// Apply rate limiting globally (or you could apply it only to specific routes)
 app.use(rateLimitMiddleware);
+
+// Connect to Redis
+import { connectRedis } from './config/redis';
+connectRedis();
 
 app.get('/', (req: Request, res: Response) => {
   res.send("The server's up");
