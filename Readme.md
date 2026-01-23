@@ -25,6 +25,13 @@ Express + TypeScript + Prisma + Postgres.
    - Ensure Redis is running locally on port `6379`.
    - Update `REDIS_URL` in `.env` if your Redis configuration differs.
 
+4. **Stripe:**
+   - Add `STRIPE_SECRET_KEY` to `.env`.
+   - Seed products and prices:
+     ```bash
+     npx ts-node src/scripts/seed-stripe.ts
+     ```
+
 ## Development
 
 ```bash
@@ -48,4 +55,5 @@ npm run start
 - `POST /auth/logout` - Logout
 - `GET /protected/dashboard` - Protected Example (Authenticated)
 - `GET /admin/stats` - Admin Stats (Protected, Admin only)
+- `POST /api/stripe/checkout` - Create Checkout Session (Authenticated)
 

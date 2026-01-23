@@ -50,12 +50,12 @@
 [✓] Use Redis for refresh tokens or sessions  
 
 ## PART 7 – Stripe Setup
-[ ] Create Stripe account  
-[ ] Configure Stripe SDK  
-[ ] Create products  
-[ ] Create prices  
-[ ] Create checkout session endpoint  
-[ ] Store subscription metadata  
+[✓] Create Stripe account  
+[✓] Configure Stripe SDK  
+[✓] Create products  
+[✓] Create prices  
+[✓] Create checkout session endpoint  
+[✓] Store subscription metadata  
 
 ## PART 8 – Stripe Webhooks
 [ ] Webhook endpoint  
