@@ -4,6 +4,7 @@ import protectedRoutes from './routes/protected.routes';
 import authRoutes from './routes/auth.routes';
 import adminRoutes from './routes/admin.routes';
 import stripeRoutes from './routes/stripe.routes';
+import webhookRoutes from './routes/webhook.routes';
 import { rateLimitMiddleware } from './middleware/rateLimit.middleware';
 
 dotenv.config();
@@ -11,6 +12,9 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
 const startTime = new Date();
+
+// Webhook route must be registered before express.json() to handle raw body
+app.use('/api/webhooks', webhookRoutes);
 
 app.use(express.json());
 

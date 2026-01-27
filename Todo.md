@@ -57,16 +57,13 @@
 [✓] Create checkout session endpoint  
 [✓] Store subscription metadata  
 
-## PART 8 – Stripe Webhooks
-[ ] Webhook endpoint  
-[ ] Signature verification  
+## PART 8/9 – Stripe Webhooks & SaaS Access Control
+[ ] Webhook endpoint w/ Signature verification  
+[ ] Create subscriptions table  
 [ ] Handle subscription created  
 [ ] Handle subscription updated  
 [ ] Handle subscription canceled  
 [ ] Sync subscription to DB  
-
-## PART 9 – SaaS Access Control
-[ ] Create subscriptions table  
 [ ] Link users to subscriptions  
 [ ] Feature gating middleware  
 [ ] Block access for inactive subscriptions  
