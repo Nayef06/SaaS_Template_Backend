@@ -58,22 +58,22 @@
 [✓] Store subscription metadata  
 
 ## PART 8/9 – Stripe Webhooks & SaaS Access Control
-[ ] Webhook endpoint w/ Signature verification  
-[ ] Create subscriptions table  
-[ ] Handle subscription created  
-[ ] Handle subscription updated  
-[ ] Handle subscription canceled  
-[ ] Sync subscription to DB  
-[ ] Link users to subscriptions  
-[ ] Feature gating middleware  
-[ ] Block access for inactive subscriptions  
+[✓] Webhook endpoint w/ Signature verification  
+[✓] Create subscriptions table  
+[✓] Handle subscription created  
+[✓] Handle subscription updated  
+[✓] Handle subscription canceled  
+[✓] Sync subscription to DB  
+[✓] Link users to subscriptions  
+[✓] Feature gating middleware  
+[✓] Block access for inactive subscriptions
 
 ## PART 10 – Logging & Error Handling
-[ ] Winston logger setup  
-[ ] Request logging  
-[ ] Error logging  
-[ ] Global error handler  
-[ ] Standard error response format  
+[✓] Winston logger setup  
+[✓] Request logging  
+[✓] Error logging  
+[✓] Global error handler  
+[✓] Standard error response format  
 
 ## PART 11 – API Hardening
 [ ] Input validation layer  
