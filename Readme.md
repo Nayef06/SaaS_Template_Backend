@@ -58,10 +58,10 @@ npm run start
 
 - `POST /api/stripe/checkout` - Create Checkout Session (Authenticated)
 
-## Security Features
+## Security
 
-- **Helmet**: Adds security headers to all responses.
-- **Input Validation**: Uses `zod` to validate request bodies on auth routes.
-- **Sanitization**: Automatically sanitizes request inputs to prevent XSS.
+- Adds security headers to all responses using ***Helmet***
+- Uses `zod` to ***validate request bodies*** on auth routes
+- Automatically ***sanitizes request inputs*** to prevent XSS
 
 
