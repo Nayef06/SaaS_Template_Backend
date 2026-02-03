@@ -78,17 +78,10 @@
 ## PART 11 – API Hardening
 [ ] Input validation layer  
 [ ] Sanitize request data  
-[ ] Centralized response helpers  
-[ ] CORS configuration  
 [ ] Security headers  
 
-## PART 12 – Developer Experience
+## PART 12/13 – Developer Experience + Testing
 [ ] Seed data scripts  
-[ ] Test users & roles  
-[ ] Stripe test mode flow  
-[ ] API client collection  
-
-## PART 13 – Testing
 [ ] Test setup  
 [ ] Authentication tests  
 [ ] RBAC tests  

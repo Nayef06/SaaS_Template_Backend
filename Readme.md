@@ -55,5 +55,13 @@ npm run start
 - `POST /auth/logout` - Logout
 - `GET /protected/dashboard` - Protected Example (Authenticated)
 - `GET /admin/stats` - Admin Stats (Protected, Admin only)
+
 - `POST /api/stripe/checkout` - Create Checkout Session (Authenticated)
+
+## Security Features
+
+- **Helmet**: Adds security headers to all responses.
+- **Input Validation**: Uses `zod` to validate request bodies on auth routes.
+- **Sanitization**: Automatically sanitizes request inputs to prevent XSS.
+
 
