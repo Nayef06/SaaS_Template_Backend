@@ -1,67 +1,91 @@
 # SaaS Backend Template
 
-Express + TypeScript + Prisma + Postgres.
+Express + TypeScript + Prisma + Postgres + Redis.
 
-## Setup
+## Features
+
+- **Authentication**: JWT access/refresh tokens, bcrypt hashing.
+- **RBAC**: Role-based access control (Admin, User).
+- **Payments**: Stripe integration (subscriptions, webhooks).
+- **Security**: Helmet, Rate Limiting, Input Sanitization, Zod Validation.
+- **Database**: PostgreSQL (Prisma ORM).
+- **Caching**: Redis.
+- **Production Ready**: Dockerized, graceful shutdown, environment validation.
+
+## Prerequisites
+
+- Node.js (v18+)
+- Docker & Docker Compose (optional, for containerized run)
+- PostgreSQL (if running locally)
+- Redis (if running locally)
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in the following:
+
+| Variable | Description |
+|---|---|
+| `NODE_ENV` | `development`, `production`, `test` |
+| `PORT` | API Port (default: 3000) |
+| `DATABASE_URL` | PostgreSQL Connection String |
+| `JWT_SECRET` | Secret for Access Tokens |
+| `REFRESH_TOKEN_SECRET` | Secret for Refresh Tokens |
+| `REDIS_URL` | Redis Connection String |
+| `STRIPE_SECRET_KEY` | Stripe Secret Key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe Webhook Sign Secret |
+
+## Getting Started
+
+### Method 1: Docker (Recommended)
+
+Run the entire stack (API, Postgres, Redis) with one command:
+
+```bash
+docker compose up --build -d
+```
+
+The API will be available at `http://localhost:3000`.
+
+To stop:
+```bash
+docker compose down
+```
+
+### Method 2: Local Development
 
 1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Database:**
-   - Copy `.env.example` to `.env`.
-   - Update `DATABASE_URL` with your local Postgres connection string.
-   - Sync schema:
-     ```bash
-     npx prisma migrate dev
-     ```
-   - Seed database (Roles):
-     ```bash
-     npx prisma db seed
-     ```
+2. **Start Services:**
+   Ensure PostgreSQL and Redis are running.
 
-3. **Redis:**
-   - Ensure Redis is running locally on port `6379`.
-   - Update `REDIS_URL` in `.env` if your Redis configuration differs.
+3. **Database Setup:**
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed
+   ```
 
-4. **Stripe:**
-   - Add `STRIPE_SECRET_KEY` to `.env`.
-   - Seed products and prices:
-     ```bash
-     npx ts-node src/scripts/seed-stripe.ts
-     ```
+4. **Run Development Server:**
+   ```bash
+   npm run dev
+   ```
 
-## Development
+## Production Build
 
-```bash
-npm run dev
-```
-
-## Production
+To build and run without Docker:
 
 ```bash
 npm run build
-npm run start
+npm start
 ```
 
-## API
+## API Documentation
 
-- `GET /` - Health check
-- `GET /health` - Detailed Health Check
-- `POST /auth/register` - Register
-- `POST /auth/login` - Login
-- `POST /auth/refresh` - Refresh Token
-- `POST /auth/logout` - Logout
-- `GET /protected/dashboard` - Protected Example (Authenticated)
-- `GET /admin/stats` - Admin Stats (Protected, Admin only)
+- `GET /health` - System Status
+- `POST /auth/register` - User Registration
+- `POST /auth/login` - User Login
+- `POST /api/stripe/checkout` - Create Subscription
 
-- `POST /api/stripe/checkout` - Create Checkout Session (Authenticated)
-
-## Security
-
-- Adds security headers to all responses using ***Helmet***
-- Uses `zod` to ***validate request bodies*** on auth routes
-- Automatically ***sanitizes request inputs*** to prevent XSS
-
-
+See `src/routes` for full API definition.

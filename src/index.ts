@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
 // @ts-ignore
 import helmet from 'helmet';
@@ -10,12 +9,14 @@ import webhookRoutes from './routes/webhook.routes';
 import { rateLimitMiddleware } from './middleware/rateLimit.middleware';
 import { sanitize } from './middleware/sanitize';
 import errorHandler from './middleware/error.middleware';
-
-dotenv.config();
+import { env } from './config/env';
+import { connectRedis, redisClient } from './config/redis';
+import { PrismaClient } from '@prisma/client';
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = env.PORT;
 const startTime = new Date();
+const prisma = new PrismaClient(); // Instantiate prisma for graceful shutdown
 
 // Security Headers
 app.use(helmet());
@@ -32,7 +33,6 @@ app.use(sanitize);
 app.use(rateLimitMiddleware);
 
 // Connect to Redis
-import { connectRedis } from './config/redis';
 connectRedis();
 
 app.get('/', (req: Request, res: Response) => {
@@ -56,6 +56,34 @@ app.get('/health', (req: Request, res: Response) => {
 // Global Error Handler
 app.use(errorHandler);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running @ http://localhost:${port}`);
+  console.log(`Environment: ${env.NODE_ENV}`);
 });
+
+// Graceful Shutdown
+const shutdown = async (signal: string) => {
+  console.log(`Received ${signal}. Starting graceful shutdown...`);
+
+  server.close(() => {
+    console.log('HTTP server closed.');
+  });
+
+  try {
+    await prisma.$disconnect();
+    console.log('Prisma client disconnected.');
+
+    if (redisClient.isOpen) {
+      await redisClient.quit();
+      console.log('Redis client disconnected.');
+    }
+
+    process.exit(0);
+  } catch (err) {
+    console.error('Error during shutdown:', err);
+    process.exit(1);
+  }
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
